@@ -12,7 +12,12 @@ def home():
     return jsonify({
         "service": "Colab Video Proxy",
         "status": "running",
-        "colab_url": COLAB_URL or "Not set yet"
+        "colab_url": COLAB_URL or "Not set yet",
+        "endpoints": {
+            "GET /health": "System status",
+            "POST /generate": "Create video",
+            "POST /update-url": "Update Colab URL"
+        }
     })
 
 @app.route('/health')
@@ -61,4 +66,7 @@ def update_url():
     })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    # DEĞİŞTİR: 5000 → 8080
+    port = int(os.environ.get('PORT', 8080))  # BURASI ÖNEMLİ!
+    print(f"🚀 Starting Flask on port {port}")
+    app.run(host='0.0.0.0', port=port, debug=False)
