@@ -23,6 +23,20 @@ def generate():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+@app.route('/status/<job_id>')
+def status(job_id):
+    """Get video status from Colab"""
+    if not COLAB_URL:
+        return jsonify({"error": "Colab URL not configured"}), 400
+    
+    try:
+        # Colab'dan status al
+        response = requests.get(f"{COLAB_URL}/status/{job_id}", timeout=10)
+        return jsonify(response.json())
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/update-url', methods=['POST'])
 def update_url():
     global COLAB_URL
